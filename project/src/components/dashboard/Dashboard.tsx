@@ -17,7 +17,7 @@ export const Dashboard: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'overview' | 'expenses' | 'analytics' | 'budget'>('overview');
 
-  // Mock data - in production, this would come from Supabase
+  // Mock data - in production, this would come from your backend API
   useEffect(() => {
     const mockExpenses: Expense[] = [
       {

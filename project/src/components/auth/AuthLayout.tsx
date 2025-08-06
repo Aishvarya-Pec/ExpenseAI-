@@ -46,7 +46,7 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({ children, title, subtitl
           transition={{ duration: 0.5, delay: 0.2 }}
           className="text-center text-xs text-gray-500 dark:text-gray-400"
         >
-          Secure authentication powered by Supabase
+          Secure authentication powered by Clerk
         </motion.div>
       </div>
     </div>

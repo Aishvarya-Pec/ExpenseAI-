@@ -5,7 +5,7 @@
 [![React](https://img.shields.io/badge/React-18.3.1-blue.svg)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.5.3-blue.svg)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4.1-38B2AC.svg)](https://tailwindcss.com/)
-[![Supabase](https://img.shields.io/badge/Supabase-2.53.0-3ECF8E.svg)](https://supabase.com/)
+[![Clerk](https://img.shields.io/badge/Clerk-5.0.0-6B46C1.svg)](https://clerk.com/)
 [![Framer Motion](https://img.shields.io/badge/Framer_Motion-12.23.12-FF0080.svg)](https://www.framer.com/motion/)
 
 ## 🌟 Overview
@@ -51,10 +51,10 @@ Experience ExpenseAI in action: [**Live Demo**](https://expenseai-demo.netlify.a
 - **Framer Motion 12.23.12** - Production-ready motion library
 - **Vite 5.4.2** - Next-generation frontend tooling
 
-### Backend & Database
-- **Supabase** - Backend-as-a-Service with real-time capabilities
-- **PostgreSQL** - Robust relational database
-- **Row Level Security** - Advanced security policies
+### Backend & Authentication
+- **Clerk** - Complete authentication and user management
+- **Local Storage** - Client-side data persistence (can be replaced with your backend)
+- **Secure Authentication** - Multi-factor authentication and security features
 
 ### Design & UI
 - **Lucide React** - Beautiful SVG icons
@@ -98,7 +98,7 @@ project/
 ### Prerequisites
 
 - Node.js 18+ and npm/yarn
-- Supabase account (free tier available)
+- Clerk account (free tier available)
 - Git
 
 ### 1. Clone the Repository
@@ -122,11 +122,10 @@ yarn install
 cp .env.example .env
 ```
 
-Update `.env` with your Supabase credentials:
+Update `.env` with your Clerk credentials:
 
 ```env
-VITE_SUPABASE_URL=https://your-project.supabase.co
-VITE_SUPABASE_ANON_KEY=your-anon-key
+VITE_CLERK_PUBLISHABLE_KEY=pk_test_your-clerk-publishable-key
 ```
 
 ### 4. Start Development Server
@@ -139,52 +138,22 @@ yarn dev
 
 Visit `http://localhost:5173` to see the application.
 
-## 🗄️ Database Setup
+## 🔐 Authentication Setup
 
-### Supabase Configuration
+### Clerk Configuration
 
-1. Create a new Supabase project
-2. Run the following SQL to create the required tables:
+1. Create a new Clerk application at [clerk.com](https://clerk.com)
+2. Get your publishable key from the Clerk dashboard
+3. Update your `.env` file with the publishable key
+4. Configure your authentication settings in the Clerk dashboard
 
-```sql
--- Create expenses table
-CREATE TABLE expenses (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
-  title TEXT NOT NULL,
-  amount DECIMAL(10,2) NOT NULL,
-  category TEXT NOT NULL,
-  description TEXT,
-  date DATE NOT NULL DEFAULT CURRENT_DATE,
-  payment_method TEXT,
-  is_recurring BOOLEAN DEFAULT FALSE,
-  tags TEXT[],
-  ai_category TEXT,
-  ai_confidence DECIMAL(3,2),
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
-);
+### Data Storage
 
--- Create groups table for shared expenses
-CREATE TABLE expense_groups (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  name TEXT NOT NULL,
-  description TEXT,
-  created_by UUID REFERENCES auth.users(id) ON DELETE CASCADE,
-  created_at TIMESTAMPTZ DEFAULT NOW()
-);
+Currently, the app uses localStorage for data persistence. For production, you should:
 
--- Enable Row Level Security
-ALTER TABLE expenses ENABLE ROW LEVEL SECURITY;
-ALTER TABLE expense_groups ENABLE ROW LEVEL SECURITY;
-
--- Create policies
-CREATE POLICY "Users can only see their own expenses" 
-ON expenses FOR ALL USING (auth.uid() = user_id);
-
-CREATE POLICY "Users can only see groups they're part of" 
-ON expense_groups FOR ALL USING (auth.uid() = created_by);
-```
+1. Set up your own backend API
+2. Update the database functions in `src/lib/clerk.ts`
+3. Implement proper data storage with your preferred database
 
 ## 📱 Features Deep Dive
 

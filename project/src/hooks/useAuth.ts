@@ -1,103 +1,45 @@
 import { useState, useEffect } from 'react'
-import { User, Session } from '@supabase/supabase-js'
-import { supabase } from '../lib/supabase'
+import { useUser, useAuth as useClerkAuth, SignIn, SignUp } from '@clerk/clerk-react'
 import toast from 'react-hot-toast'
 
-// Mock user for development when Supabase is not configured
-const MOCK_USER = {
-  id: 'mock-user-id',
-  email: 'demo@example.com',
-  user_metadata: {
-    full_name: 'Demo User'
-  },
-  app_metadata: {},
-  aud: 'authenticated',
-  created_at: new Date().toISOString(),
-  updated_at: new Date().toISOString(),
-  role: 'authenticated',
-  email_confirmed_at: new Date().toISOString(),
-  phone_confirmed_at: undefined,
-  last_sign_in_at: new Date().toISOString(),
-  confirmation_sent_at: undefined,
-  recovery_sent_at: undefined,
-  email_change_sent_at: undefined,
-  banned_until: undefined,
-  phone: undefined,
-  phone_change: undefined,
-  email_change: undefined,
-  factors: undefined,
-  identities: []
-} as User
-
-// Check if Supabase is properly configured
-const isSupabaseConfigured = () => {
-  const url = import.meta.env.VITE_SUPABASE_URL
-  const key = import.meta.env.VITE_SUPABASE_ANON_KEY
-  return url && key && url !== 'https://your-project.supabase.co' && key !== 'your-anon-key'
+// Check if Clerk is properly configured
+const isClerkConfigured = () => {
+  const key = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
+  return key && key !== 'pk_test_your-clerk-key'
 }
 
 export const useAuth = () => {
-  const [user, setUser] = useState<User | null>(null)
-  const [session, setSession] = useState<Session | null>(null)
+  const { user, isLoaded: userLoaded } = useUser()
+  const { signOut: clerkSignOut } = useClerkAuth()
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (isSupabaseConfigured()) {
-      // Use real Supabase authentication
-      supabase.auth.getSession().then(({ data: { session } }) => {
-        setSession(session)
-        setUser(session?.user ?? null)
-        setLoading(false)
-      })
-
-      const {
-        data: { subscription },
-      } = supabase.auth.onAuthStateChange((_event, session) => {
-        setSession(session)
-        setUser(session?.user ?? null)
-        setLoading(false)
-      })
-
-      return () => subscription.unsubscribe()
+    if (isClerkConfigured()) {
+      // Use real Clerk authentication
+      setLoading(!userLoaded)
     } else {
       // Use mock authentication for development
-      console.log('⚠️ Supabase not configured. Using mock authentication for development.')
+      console.log('⚠️ Clerk not configured. Using mock authentication for development.')
       setLoading(false)
     }
-  }, [])
+  }, [userLoaded])
 
   const signUp = async (email: string, password: string, fullName: string) => {
     try {
       setLoading(true)
       console.log('📝 Signing up with:', email, fullName)
       
-      if (isSupabaseConfigured()) {
-        const { data, error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: {
-              full_name: fullName,
-            },
-          },
-        })
-
-        if (error) throw error
-
-        if (data.user && !data.session) {
-          toast.success('Check your email for the confirmation link!')
-        }
-
-        return { data, error: null }
+      if (isClerkConfigured()) {
+        // Clerk handles signup through their UI components
+        // This function is kept for compatibility but Clerk signup is typically done via <SignUp />
+        toast.success('Please use the signup form below!')
+        return { data: { user }, error: null }
       } else {
         // Mock signup for development
         console.log('🎭 Using mock signup')
         await new Promise(resolve => setTimeout(resolve, 1000)) // Simulate API delay
-        const mockUser = { ...MOCK_USER, email, user_metadata: { full_name: fullName } }
-        console.log('👤 Setting mock user:', mockUser)
-        setUser(mockUser)
         toast.success('Account created successfully! (Mock mode)')
-        return { data: { user: mockUser }, error: null }
+        return { data: { user: null }, error: null }
       }
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'An error occurred';
@@ -113,25 +55,17 @@ export const useAuth = () => {
       setLoading(true)
       console.log('🔐 Signing in with:', email)
       
-      if (isSupabaseConfigured()) {
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        })
-
-        if (error) throw error
-
-        toast.success('Welcome back!')
-        return { data, error: null }
+      if (isClerkConfigured()) {
+        // Clerk handles signin through their UI components
+        // This function is kept for compatibility but Clerk signin is typically done via <SignIn />
+        toast.success('Please use the signin form below!')
+        return { data: { user }, error: null }
       } else {
         // Mock signin for development
         console.log('🎭 Using mock authentication')
         await new Promise(resolve => setTimeout(resolve, 1000)) // Simulate API delay
-        const mockUser = { ...MOCK_USER, email }
-        console.log('👤 Setting mock user:', mockUser)
-        setUser(mockUser)
         toast.success('Welcome back! (Mock mode)')
-        return { data: { user: mockUser }, error: null }
+        return { data: { user: null }, error: null }
       }
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'An error occurred';
@@ -146,14 +80,12 @@ export const useAuth = () => {
     try {
       setLoading(true)
       
-      if (isSupabaseConfigured()) {
-        const { error } = await supabase.auth.signOut()
-        if (error) throw error
+      if (isClerkConfigured()) {
+        await clerkSignOut()
         toast.success('Signed out successfully')
       } else {
         // Mock signout for development
         await new Promise(resolve => setTimeout(resolve, 500)) // Simulate API delay
-        setUser(null)
         toast.success('Signed out successfully (Mock mode)')
       }
     } catch (error: unknown) {
@@ -166,10 +98,9 @@ export const useAuth = () => {
 
   const resetPassword = async (email: string) => {
     try {
-      if (isSupabaseConfigured()) {
-        const { error } = await supabase.auth.resetPasswordForEmail(email)
-        if (error) throw error
-        toast.success('Password reset email sent!')
+      if (isClerkConfigured()) {
+        // Clerk handles password reset through their UI components
+        toast.success('Please use the password reset form!')
         return { error: null }
       } else {
         // Mock password reset for development
@@ -186,7 +117,7 @@ export const useAuth = () => {
 
   return {
     user,
-    session,
+    session: user ? { user } : null,
     loading,
     signUp,
     signIn,
