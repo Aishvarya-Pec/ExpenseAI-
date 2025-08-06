@@ -12,6 +12,7 @@ import {
   Receipt,
   Calendar
 } from 'lucide-react'
+import { Logo } from '../ui/Logo'
 
 interface SidebarProps {
   currentPage: string
@@ -40,31 +41,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPage, onPageChange, isC
       } bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 h-screen sticky top-0 transition-all duration-300 overflow-hidden`}
     >
       <div className="p-6">
-        {!isCollapsed && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex items-center space-x-3 mb-8"
-          >
-            <div className="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
-              <Wallet className="h-6 w-6 text-white" />
-            </div>
-            <div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                ExpenseAI
-              </h1>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Smart Finance</p>
-            </div>
-          </motion.div>
-        )}
-        
-        {isCollapsed && (
-          <div className="flex justify-center mb-8">
-            <div className="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
-              <Wallet className="h-6 w-6 text-white" />
-            </div>
-          </div>
-        )}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="mb-8"
+        >
+          <Logo size="lg" showText={!isCollapsed} animated={true} />
+        </motion.div>
       </div>
 
       <nav className="px-3 pb-6">

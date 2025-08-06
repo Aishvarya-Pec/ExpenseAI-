@@ -199,40 +199,92 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               className="relative"
             >
               <div className="relative">
-                {/* Phone mockup */}
-                <div className="w-80 h-96 mx-auto bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-2 shadow-2xl">
-                  <div className="w-full h-full bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl overflow-hidden">
-                    {/* Mock app content */}
-                    <div className="p-6 space-y-4">
-                      <div className="flex items-center justify-between">
-                        <h3 className="font-bold text-gray-900">Today's Expenses</h3>
-                        <div className="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg"></div>
+                {/* Main illustration */}
+                <div className="relative w-full max-w-lg mx-auto">
+                  {/* Background pattern */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-indigo-100 to-purple-100 dark:from-indigo-900 dark:to-purple-900 rounded-3xl transform rotate-6 opacity-20"></div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900 dark:to-pink-900 rounded-3xl transform -rotate-6 opacity-20"></div>
+                  
+                  {/* Phone mockup */}
+                  <div className="relative w-80 h-[500px] mx-auto bg-gradient-to-br from-gray-900 to-gray-800 rounded-[3rem] p-3 shadow-2xl">
+                    <div className="w-full h-full bg-gradient-to-br from-indigo-50 to-purple-50 rounded-[2.5rem] overflow-hidden relative">
+                      {/* Status bar */}
+                      <div className="flex justify-between items-center p-4 text-xs font-semibold text-gray-700">
+                        <span>9:41</span>
+                        <div className="flex space-x-1">
+                          <div className="w-4 h-2 bg-green-500 rounded-sm"></div>
+                          <div className="w-4 h-2 bg-green-500 rounded-sm"></div>
+                          <div className="w-4 h-2 bg-green-500 rounded-sm"></div>
+                        </div>
                       </div>
                       
-                      <div className="space-y-3">
+                      {/* App header */}
+                      <div className="px-6 pb-4">
+                        <div className="flex items-center justify-between mb-2">
+                          <h3 className="text-xl font-bold text-gray-900">Dashboard</h3>
+                          <div className="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
+                            <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"></path>
+                            </svg>
+                          </div>
+                        </div>
+                        <p className="text-sm text-gray-600">Track your expenses with AI</p>
+                      </div>
+                      
+                      {/* Balance card */}
+                      <div className="mx-6 mb-4 p-4 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl text-white">
+                        <p className="text-sm opacity-90">Total Balance</p>
+                        <p className="text-2xl font-bold">$4,250.80</p>
+                        <div className="flex justify-between mt-2 text-xs">
+                          <span>Income: $5,200</span>
+                          <span>Expenses: $949.20</span>
+                        </div>
+                      </div>
+                      
+                      {/* Recent transactions */}
+                      <div className="px-6 space-y-3">
+                        <h4 className="font-semibold text-gray-900 text-sm">Recent Transactions</h4>
                         {[
-                          { name: "Starbucks Coffee", amount: "$5.50", category: "Food" },
-                          { name: "Uber Ride", amount: "$15.30", category: "Transport" },
-                          { name: "Netflix", amount: "$12.99", category: "Entertainment" }
+                          { name: "Starbucks Coffee", amount: "-$5.50", category: "Food", icon: "☕", color: "bg-orange-100 text-orange-600" },
+                          { name: "Salary Deposit", amount: "+$3,200", category: "Income", icon: "💰", color: "bg-green-100 text-green-600" },
+                          { name: "Uber Ride", amount: "-$15.30", category: "Transport", icon: "🚗", color: "bg-blue-100 text-blue-600" },
+                          { name: "Netflix", amount: "-$12.99", category: "Entertainment", icon: "🎬", color: "bg-red-100 text-red-600" }
                         ].map((expense, index) => (
                           <motion.div
                             key={index}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 1 + index * 0.2 }}
-                            className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm"
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 1 + index * 0.15 }}
+                            className="flex items-center justify-between p-3 bg-white rounded-xl shadow-sm"
                           >
-                            <div>
-                              <p className="font-medium text-gray-900 text-sm">{expense.name}</p>
-                              <p className="text-xs text-gray-500">{expense.category}</p>
+                            <div className="flex items-center space-x-3">
+                              <div className={`w-10 h-10 ${expense.color} rounded-full flex items-center justify-center text-sm`}>
+                                {expense.icon}
+                              </div>
+                              <div>
+                                <p className="font-medium text-gray-900 text-sm">{expense.name}</p>
+                                <p className="text-xs text-gray-500">{expense.category}</p>
+                              </div>
                             </div>
-                            <p className="font-bold text-gray-900 text-sm">{expense.amount}</p>
+                            <p className={`font-bold text-sm ${expense.amount.startsWith('+') ? 'text-green-600' : 'text-red-600'}`}>
+                              {expense.amount}
+                            </p>
                           </motion.div>
                         ))}
                       </div>
                       
-                      <div className="h-32 bg-gradient-to-r from-indigo-100 to-purple-100 rounded-lg flex items-center justify-center">
-                        <PieChart className="h-16 w-16 text-indigo-600 animate-pulse" />
+                      {/* Bottom navigation */}
+                      <div className="absolute bottom-4 left-4 right-4 bg-white rounded-2xl p-2 shadow-lg">
+                        <div className="flex justify-around">
+                          {['🏠', '📊', '➕', '🎯', '👤'].map((icon, index) => (
+                            <button
+                              key={index}
+                              className={`w-10 h-10 rounded-xl flex items-center justify-center ${index === 0 ? 'bg-indigo-100 text-indigo-600' : 'text-gray-400'}`}
+                            >
+                              {icon}
+                            </button>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -240,19 +292,35 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 
                 {/* Floating elements */}
                 <motion.div
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className="absolute -top-4 -left-4 w-16 h-16 bg-gradient-to-r from-green-400 to-blue-400 rounded-2xl flex items-center justify-center shadow-lg"
+                  animate={{ y: [0, -15, 0], rotate: [0, 5, 0] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute -top-8 -left-8 w-20 h-20 bg-gradient-to-r from-green-400 to-blue-400 rounded-2xl flex items-center justify-center shadow-xl"
                 >
-                  <Brain className="h-8 w-8 text-white" />
+                  <Brain className="h-10 w-10 text-white" />
                 </motion.div>
                 
                 <motion.div
-                  animate={{ y: [0, 10, 0] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: 1 }}
-                  className="absolute -bottom-4 -right-4 w-16 h-16 bg-gradient-to-r from-purple-400 to-pink-400 rounded-2xl flex items-center justify-center shadow-lg"
+                  animate={{ y: [0, 15, 0], rotate: [0, -5, 0] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+                  className="absolute -bottom-8 -right-8 w-20 h-20 bg-gradient-to-r from-purple-400 to-pink-400 rounded-2xl flex items-center justify-center shadow-xl"
                 >
-                  <Camera className="h-8 w-8 text-white" />
+                  <Camera className="h-10 w-10 text-white" />
+                </motion.div>
+                
+                <motion.div
+                  animate={{ x: [0, 10, 0], y: [0, -5, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                  className="absolute top-1/2 -right-4 w-16 h-16 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-2xl flex items-center justify-center shadow-lg"
+                >
+                  <Sparkles className="h-8 w-8 text-white" />
+                </motion.div>
+                
+                <motion.div
+                  animate={{ x: [0, -10, 0], y: [0, 5, 0] }}
+                  transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                  className="absolute top-1/4 -left-4 w-16 h-16 bg-gradient-to-r from-teal-400 to-cyan-400 rounded-2xl flex items-center justify-center shadow-lg"
+                >
+                  <TrendingUp className="h-8 w-8 text-white" />
                 </motion.div>
               </div>
             </motion.div>

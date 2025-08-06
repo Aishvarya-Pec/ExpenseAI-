@@ -1,5 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
+import { Logo } from '../ui/Logo'
 
 interface AuthLayoutProps {
   children: React.ReactNode
@@ -18,12 +19,9 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({ children, title, subtitl
           className="text-center"
         >
           {/* Logo */}
-          <motion.div 
-            whileHover={{ scale: 1.05 }}
-            className="mx-auto w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg"
-          >
-            <span className="text-white font-bold text-2xl">💰</span>
-          </motion.div>
+          <div className="flex justify-center mb-6">
+            <Logo size="xl" showText={false} animated={true} />
+          </div>
           
           <h2 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
             {title}

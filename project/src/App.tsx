@@ -7,6 +7,7 @@ import { AuthPage } from './components/auth/AuthPage';
 import { LandingPage } from './components/pages/LandingPage';
 import { HowItWorks } from './components/pages/HowItWorks';
 import { Reviews } from './components/pages/Reviews';
+import { Logo } from './components/ui/Logo';
 import { useTheme } from './hooks/useTheme';
 import { useAuth } from './hooks/useAuth';
 
@@ -49,8 +50,8 @@ function App() {
           : 'bg-gradient-to-br from-gray-50 via-white to-indigo-50'
       }`}>
         <div className="text-center space-y-4">
-          <div className="w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto animate-pulse">
-            <span className="text-white font-bold text-2xl">💰</span>
+          <div className="flex justify-center">
+            <Logo size="xl" showText={false} animated={true} className="animate-pulse" />
           </div>
           <div className="space-y-2">
             <div className="w-8 h-8 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin mx-auto"></div>
@@ -143,14 +144,9 @@ function App() {
             <div className="flex items-center justify-between h-16">
               <div 
                 onClick={() => setCurrentPage('landing')}
-                className="flex items-center space-x-3 cursor-pointer"
+                className="cursor-pointer"
               >
-                <div className="w-8 h-8 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-lg">💰</span>
-                </div>
-                <span className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                  ExpenseAI
-                </span>
+                <Logo size="md" animated={true} />
               </div>
               
               <div className="flex items-center space-x-6">

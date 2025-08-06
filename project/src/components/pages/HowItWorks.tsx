@@ -106,19 +106,115 @@ export const HowItWorks: React.FC = () => {
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center"
-          >
-            <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-6">
-              How ExpenseAI Works
-            </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Discover how our AI-powered platform transforms the way you track, analyze, and manage your expenses with cutting-edge technology and intuitive design.
-            </p>
-          </motion.div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center lg:text-left"
+            >
+              <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-6">
+                How ExpenseAI Works
+              </h1>
+              <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed">
+                Discover how our AI-powered platform transforms the way you track, analyze, and manage your expenses with cutting-edge technology and intuitive design.
+              </p>
+            </motion.div>
+            
+            {/* Hero illustration */}
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative"
+            >
+              <div className="relative w-full max-w-md mx-auto">
+                {/* Central hub illustration */}
+                <div className="relative w-64 h-64 mx-auto">
+                  {/* Central AI brain */}
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                    className="absolute inset-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full flex items-center justify-center shadow-xl"
+                  >
+                    <Brain className="h-10 w-10 text-white" />
+                  </motion.div>
+                  
+                  {/* Orbiting feature icons */}
+                  {[
+                    { icon: Camera, color: "from-green-400 to-emerald-500", delay: 0 },
+                    { icon: PieChart, color: "from-orange-400 to-red-500", delay: 1 },
+                    { icon: Users, color: "from-blue-400 to-cyan-500", delay: 2 },
+                    { icon: Target, color: "from-purple-400 to-pink-500", delay: 3 },
+                    { icon: Shield, color: "from-yellow-400 to-orange-500", delay: 4 },
+                    { icon: Globe, color: "from-teal-400 to-blue-500", delay: 5 }
+                  ].map((item, index) => {
+                    const angle = (index * 360) / 6
+                    const radius = 100
+                    const x = Math.cos((angle * Math.PI) / 180) * radius
+                    const y = Math.sin((angle * Math.PI) / 180) * radius
+                    
+                    return (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={{ 
+                          opacity: 1, 
+                          scale: 1,
+                          rotate: -360
+                        }}
+                        transition={{ 
+                          delay: item.delay * 0.2,
+                          rotate: { duration: 20, repeat: Infinity, ease: "linear" }
+                        }}
+                        className={`absolute w-12 h-12 bg-gradient-to-r ${item.color} rounded-xl flex items-center justify-center shadow-lg`}
+                        style={{
+                          left: `calc(50% + ${x}px - 24px)`,
+                          top: `calc(50% + ${y}px - 24px)`,
+                        }}
+                      >
+                        <item.icon className="h-6 w-6 text-white" />
+                      </motion.div>
+                    )
+                  })}
+                  
+                  {/* Connection lines */}
+                  <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                    {[0, 1, 2, 3, 4, 5].map((index) => {
+                      const angle = (index * 360) / 6
+                      const radius = 100
+                      const x1 = 50 + Math.cos((angle * Math.PI) / 180) * 15
+                      const y1 = 50 + Math.sin((angle * Math.PI) / 180) * 15
+                      const x2 = 50 + Math.cos((angle * Math.PI) / 180) * (radius - 15)
+                      const y2 = 50 + Math.sin((angle * Math.PI) / 180) * (radius - 15)
+                      
+                      return (
+                        <motion.line
+                          key={index}
+                          x1={`${x1}%`}
+                          y1={`${y1}%`}
+                          x2={`${x2}%`}
+                          y2={`${y2}%`}
+                          stroke="url(#gradient)"
+                          strokeWidth="2"
+                          strokeDasharray="5,5"
+                          initial={{ pathLength: 0 }}
+                          animate={{ pathLength: 1 }}
+                          transition={{ delay: index * 0.2, duration: 2 }}
+                        />
+                      )
+                    })}
+                    <defs>
+                      <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#6366f1" stopOpacity="0.6"/>
+                        <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.3"/>
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
         
         {/* Animated background elements */}
