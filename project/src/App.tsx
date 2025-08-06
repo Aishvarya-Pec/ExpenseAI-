@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { Header } from './components/layout/Header';
 import { Sidebar } from './components/layout/Sidebar';
@@ -15,7 +15,20 @@ function App() {
   const { theme } = useTheme();
   const { user, loading, signOut } = useAuth();
   const [currentPage, setCurrentPage] = useState<string>('landing');
-  const [showSidebar, setShowSidebar] = useState(true);
+
+  // Debug user state changes
+  useEffect(() => {
+    console.log('👤 User state changed:', user ? 'Logged in' : 'Not logged in')
+    console.log('📍 Current page:', currentPage)
+  }, [user, currentPage])
+
+  // Auto-navigate to dashboard when user logs in (fallback)
+  useEffect(() => {
+    if (user && (currentPage === 'auth' || currentPage === 'landing')) {
+      console.log('🔄 Auto-navigating to dashboard due to user login')
+      setCurrentPage('dashboard')
+    }
+  }, [user, currentPage])
 
   const handleProfileClick = () => {
     // TODO: Implement profile modal/dropdown
@@ -23,10 +36,12 @@ function App() {
   };
 
   const handlePageChange = (page: string) => {
+    console.log('🔄 Changing page to:', page)
     setCurrentPage(page);
   };
 
   const handleGetStarted = () => {
+    console.log('🚀 Get Started clicked, user:', user ? 'logged in' : 'not logged in')
     if (user) {
       setCurrentPage('dashboard');
     } else {
@@ -40,6 +55,11 @@ function App() {
 
   const handleViewReviews = () => {
     setCurrentPage('reviews');
+  };
+
+  const handleAuthSuccess = () => {
+    console.log('✅ Auth success! Navigating to dashboard...')
+    setCurrentPage('dashboard');
   };
 
   if (loading) {
@@ -64,7 +84,7 @@ function App() {
 
   // Handle authentication flow
   if (!user && (currentPage === 'auth' || currentPage === 'dashboard')) {
-    return <AuthPage />;
+    return <AuthPage onSuccess={handleAuthSuccess} />;
   }
 
   // Render page content
@@ -83,7 +103,7 @@ function App() {
       case 'reviews':
         return <Reviews />;
       case 'auth':
-        return <AuthPage />;
+        return <AuthPage onSuccess={handleAuthSuccess} />;
       case 'dashboard':
       case 'expenses':
       case 'groups':
@@ -93,15 +113,13 @@ function App() {
       case 'calendar':
       case 'reports':
       case 'settings':
-        if (!user) return <AuthPage />;
+        if (!user) return <AuthPage onSuccess={handleAuthSuccess} />;
         return (
           <div className="flex">
-            {showSidebar && (
-              <Sidebar
-                currentPage={currentPage}
-                onPageChange={handlePageChange}
-              />
-            )}
+            <Sidebar
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+            />
             <div className="flex-1">
               <Header user={user} onProfileClick={handleProfileClick} onSignOut={signOut} />
               <main className="p-6">

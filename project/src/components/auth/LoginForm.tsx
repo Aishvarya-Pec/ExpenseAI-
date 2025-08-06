@@ -7,9 +7,10 @@ import { useAuth } from '../../hooks/useAuth'
 interface LoginFormProps {
   onToggleMode: () => void
   onForgotPassword: () => void
+  onSuccess?: () => void
 }
 
-export const LoginForm: React.FC<LoginFormProps> = ({ onToggleMode, onForgotPassword }) => {
+export const LoginForm: React.FC<LoginFormProps> = ({ onToggleMode, onForgotPassword, onSuccess }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -41,7 +42,15 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onToggleMode, onForgotPass
     
     if (!validateForm()) return
     
-    await signIn(email, password)
+    console.log('🔐 Login form submitted')
+    const result = await signIn(email, password)
+    console.log('📊 Login result:', result)
+    if (result.data && !result.error) {
+      console.log('✅ Login successful, calling onSuccess')
+      onSuccess?.()
+    } else {
+      console.log('❌ Login failed or has error')
+    }
   }
 
   return (

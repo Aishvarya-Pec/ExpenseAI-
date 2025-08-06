@@ -8,7 +8,6 @@ import {
   Target, 
   Settings, 
   TrendingUp,
-  Wallet,
   Receipt,
   Calendar
 } from 'lucide-react'

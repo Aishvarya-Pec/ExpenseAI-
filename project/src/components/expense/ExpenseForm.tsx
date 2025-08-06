@@ -8,7 +8,7 @@ import { categorizeExpense } from '../../utils/aiCategorization';
 import toast from 'react-hot-toast';
 
 interface ExpenseFormProps {
-  onSubmit: (expense: any) => void;
+  onSubmit: (expense: Omit<import('../../types').Expense, 'id' | 'created_at' | 'updated_at'>) => void;
   isLoading?: boolean;
 }
 
@@ -23,7 +23,10 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({ onSubmit, isLoading })
     tags: [] as string[],
   });
 
-  const [aiSuggestion, setAiSuggestion] = useState<any>(null);
+  const [aiSuggestion, setAiSuggestion] = useState<{
+    category: string;
+    confidence: number;
+  } | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   const categories = [
@@ -160,7 +163,7 @@ export const ExpenseForm: React.FC<ExpenseFormProps> = ({ onSubmit, isLoading })
                     type="button"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => setFormData(prev => ({ ...prev, payment_method: method.value as any }))}
+                    onClick={() => setFormData(prev => ({ ...prev, payment_method: method.value as 'card' | 'cash' | 'digital' | 'crypto' }))}
                     className={`
                       w-full p-3 rounded-lg text-left transition-all duration-200 flex items-center space-x-3
                       ${formData.payment_method === method.value

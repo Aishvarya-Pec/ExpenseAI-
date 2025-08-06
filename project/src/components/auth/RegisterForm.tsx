@@ -6,9 +6,10 @@ import { useAuth } from '../../hooks/useAuth'
 
 interface RegisterFormProps {
   onToggleMode: () => void
+  onSuccess?: () => void
 }
 
-export const RegisterForm: React.FC<RegisterFormProps> = ({ onToggleMode }) => {
+export const RegisterForm: React.FC<RegisterFormProps> = ({ onToggleMode, onSuccess }) => {
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -59,7 +60,15 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onToggleMode }) => {
     
     if (!validateForm()) return
     
-    await signUp(formData.email, formData.password, formData.fullName)
+    console.log('📝 Register form submitted')
+    const result = await signUp(formData.email, formData.password, formData.fullName)
+    console.log('📊 Register result:', result)
+    if (result.data && !result.error) {
+      console.log('✅ Register successful, calling onSuccess')
+      onSuccess?.()
+    } else {
+      console.log('❌ Register failed or has error')
+    }
   }
 
   const handleInputChange = (field: string, value: string) => {

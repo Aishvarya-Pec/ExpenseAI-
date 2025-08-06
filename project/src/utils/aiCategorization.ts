@@ -57,7 +57,7 @@ const generateSmartSuggestions = (category: string, amount: number): string[] =>
   return suggestions[category] || ['Track this category to identify patterns'];
 };
 
-export const getSpendingInsights = (expenses: any[]) => {
+export const getSpendingInsights = (expenses: import('../types').Expense[]) => {
   const insights = [];
   
   // Calculate spending velocity

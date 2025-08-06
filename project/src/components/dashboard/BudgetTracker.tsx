@@ -131,7 +131,7 @@ export const BudgetTracker: React.FC<BudgetTrackerProps> = ({ expenses }) => {
                 </label>
                 <select
                   value={newBudget.period}
-                  onChange={(e) => setNewBudget(prev => ({ ...prev, period: e.target.value as any }))}
+                  onChange={(e) => setNewBudget(prev => ({ ...prev, period: e.target.value as 'weekly' | 'monthly' | 'yearly' }))}
                   className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                 >
                   <option value="weekly">Weekly</option>

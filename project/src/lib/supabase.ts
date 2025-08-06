@@ -19,7 +19,7 @@ export const getExpenses = async (userId: string) => {
   return data;
 };
 
-export const addExpense = async (expense: Omit<any, 'id' | 'created_at' | 'updated_at'>) => {
+export const addExpense = async (expense: Omit<import('../types').Expense, 'id' | 'created_at' | 'updated_at'>) => {
   const { data, error } = await supabase
     .from('expenses')
     .insert([expense])

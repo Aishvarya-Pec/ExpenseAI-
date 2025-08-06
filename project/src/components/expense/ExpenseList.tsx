@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trash2, Edit, Tag, Calendar, CreditCard } from 'lucide-react';
+import { Trash2, Edit, Tag, Calendar } from 'lucide-react';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { format } from 'date-fns';

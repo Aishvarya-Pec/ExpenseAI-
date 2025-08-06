@@ -6,7 +6,11 @@ import { ForgotPasswordForm } from './ForgotPasswordForm'
 
 type AuthMode = 'login' | 'register' | 'forgot-password'
 
-export const AuthPage: React.FC = () => {
+interface AuthPageProps {
+  onSuccess?: () => void
+}
+
+export const AuthPage: React.FC<AuthPageProps> = ({ onSuccess }) => {
   const [mode, setMode] = useState<AuthMode>('login')
 
   const getTitle = () => {
@@ -42,12 +46,14 @@ export const AuthPage: React.FC = () => {
           <LoginForm
             onToggleMode={() => setMode('register')}
             onForgotPassword={() => setMode('forgot-password')}
+            onSuccess={onSuccess}
           />
         )
       case 'register':
         return (
           <RegisterForm
             onToggleMode={() => setMode('login')}
+            onSuccess={onSuccess}
           />
         )
       case 'forgot-password':

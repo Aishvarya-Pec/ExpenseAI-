@@ -6,7 +6,13 @@ import { Button } from '../ui/Button';
 import { Logo } from '../ui/Logo';
 
 interface HeaderProps {
-  user?: any;
+  user?: {
+    full_name?: string;
+    email?: string;
+    user_metadata?: {
+      full_name?: string;
+    };
+  };
   onProfileClick: () => void;
   onSignOut: () => void;
 }

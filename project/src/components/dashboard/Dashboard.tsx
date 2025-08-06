@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { PlusCircle, TrendingUp, TrendingDown, DollarSign, Target } from 'lucide-react';
+import { PlusCircle, TrendingUp, DollarSign, Target } from 'lucide-react';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { ExpenseForm } from '../expense/ExpenseForm';
@@ -63,7 +63,7 @@ export const Dashboard: React.FC = () => {
 
   const insights = getSpendingInsights(expenses);
 
-  const handleAddExpense = async (expenseData: any) => {
+  const handleAddExpense = async (expenseData: Omit<Expense, 'id' | 'created_at' | 'updated_at'>) => {
     setIsLoading(true);
     try {
       // Simulate API call
@@ -79,7 +79,7 @@ export const Dashboard: React.FC = () => {
       setExpenses(prev => [newExpense, ...prev]);
       setShowAddForm(false);
       toast.success('Expense added successfully!');
-    } catch (error) {
+    } catch {
       toast.error('Failed to add expense');
     } finally {
       setIsLoading(false);
@@ -90,14 +90,14 @@ export const Dashboard: React.FC = () => {
     try {
       setExpenses(prev => prev.filter(expense => expense.id !== id));
       toast.success('Expense deleted successfully!');
-    } catch (error) {
+    } catch {
       toast.error('Failed to delete expense');
     }
   };
 
   const handleEditExpense = (expense: Expense) => {
     // TODO: Implement edit functionality
-    toast.info('Edit functionality coming soon!');
+    toast.success('Edit functionality coming soon!');
   };
 
   const tabs = [
@@ -116,7 +116,7 @@ export const Dashboard: React.FC = () => {
             key={tab.id}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            onClick={() => setActiveTab(tab.id as any)}
+            onClick={() => setActiveTab(tab.id as 'overview' | 'expenses' | 'analytics' | 'budget')}
             className={`
               flex items-center space-x-2 px-4 py-2 rounded-xl transition-all duration-200 whitespace-nowrap
               ${activeTab === tab.id
