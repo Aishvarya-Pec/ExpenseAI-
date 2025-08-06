@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Moon, Sun, User, Bell, Settings } from 'lucide-react';
+import { Moon, Sun, User, Bell, Settings, LogOut } from 'lucide-react';
 import { useTheme } from '../../hooks/useTheme';
 import { Button } from '../ui/Button';
 
 interface HeaderProps {
   user?: any;
   onProfileClick: () => void;
+  onSignOut: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ user, onProfileClick }) => {
+export const Header: React.FC<HeaderProps> = ({ user, onProfileClick, onSignOut }) => {
   const { theme, toggleTheme } = useTheme();
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
   return (
     <motion.header 
@@ -64,14 +66,56 @@ export const Header: React.FC<HeaderProps> = ({ user, onProfileClick }) => {
                 </span>
               </Button>
               
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={onProfileClick}
-                className="p-2"
-              >
-                <User size={18} />
-              </Button>
+              <div className="relative">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowUserMenu(!showUserMenu)}
+                  className="p-2 relative"
+                >
+                  <User size={18} />
+                </Button>
+                
+                {showUserMenu && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95, y: -10 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                    className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50"
+                  >
+                    <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-700">
+                      <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                        {user?.user_metadata?.full_name || user?.email || 'User'}
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        {user?.email}
+                      </p>
+                    </div>
+                    
+                    <button
+                      onClick={() => {
+                        onProfileClick();
+                        setShowUserMenu(false);
+                      }}
+                      className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center space-x-2"
+                    >
+                      <Settings size={16} />
+                      <span>Settings</span>
+                    </button>
+                    
+                    <button
+                      onClick={() => {
+                        onSignOut();
+                        setShowUserMenu(false);
+                      }}
+                      className="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950 flex items-center space-x-2"
+                    >
+                      <LogOut size={16} />
+                      <span>Sign out</span>
+                    </button>
+                  </motion.div>
+                )}
+              </div>
             </div>
           </div>
         </div>
