@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { SignIn, SignUp } from '@clerk/clerk-react'
 import { AuthLayout } from './AuthLayout'
-
 type AuthMode = 'login' | 'register'
-
 interface AuthPageProps {
   onSuccess?: () => void
 }
 
-export const AuthPage: React.FC<AuthPageProps> = ({ onSuccess }) => {
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const AuthPage: React.FC<AuthPageProps> = ({ onSuccess: _onSuccess }) => {
   const [mode, setMode] = useState<AuthMode>('login')
 
   const getTitle = () => {
@@ -21,7 +21,6 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onSuccess }) => {
         return 'ExpenseAI'
     }
   }
-
   const getSubtitle = () => {
     switch (mode) {
       case 'login':
@@ -32,7 +31,6 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onSuccess }) => {
         return ''
     }
   }
-
   const renderForm = () => {
     switch (mode) {
       case 'login':
@@ -79,7 +77,6 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onSuccess }) => {
         return null
     }
   }
-
   return (
     <AuthLayout title={getTitle()} subtitle={getSubtitle()}>
       <div className="flex justify-center">
@@ -100,3 +97,4 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onSuccess }) => {
     </AuthLayout>
   )
 }
+  

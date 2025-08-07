@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+
+import { useState, useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { Header } from './components/layout/Header';
 import { Sidebar } from './components/layout/Sidebar';
@@ -10,18 +11,15 @@ import { Reviews } from './components/pages/Reviews';
 import { Logo } from './components/ui/Logo';
 import { useTheme } from './hooks/useTheme';
 import { useAuth } from './hooks/useAuth';
-
 function App() {
   const { theme } = useTheme();
   const { user, loading, signOut } = useAuth();
   const [currentPage, setCurrentPage] = useState<string>('landing');
-
   // Debug user state changes
   useEffect(() => {
     console.log('👤 User state changed:', user ? 'Logged in' : 'Not logged in')
     console.log('📍 Current page:', currentPage)
   }, [user, currentPage])
-
   // Auto-navigate to dashboard when user logs in (fallback)
   useEffect(() => {
     if (user && (currentPage === 'auth' || currentPage === 'landing')) {
@@ -29,17 +27,14 @@ function App() {
       setCurrentPage('dashboard')
     }
   }, [user, currentPage])
-
   const handleProfileClick = () => {
     // TODO: Implement profile modal/dropdown
     console.log('Profile clicked');
   };
-
   const handlePageChange = (page: string) => {
     console.log('🔄 Changing page to:', page)
     setCurrentPage(page);
   };
-
   const handleGetStarted = () => {
     console.log('🚀 Get Started clicked, user:', user ? 'logged in' : 'not logged in')
     if (user) {
@@ -48,20 +43,16 @@ function App() {
       setCurrentPage('auth');
     }
   };
-
   const handleLearnMore = () => {
     setCurrentPage('how-it-works');
   };
-
   const handleViewReviews = () => {
     setCurrentPage('reviews');
   };
-
   const handleAuthSuccess = () => {
     console.log('✅ Auth success! Navigating to dashboard...')
     setCurrentPage('dashboard');
   };
-
   if (loading) {
     return (
       <div className={`min-h-screen flex items-center justify-center transition-colors duration-300 ${
@@ -81,12 +72,10 @@ function App() {
       </div>
     );
   }
-
   // Handle authentication flow
   if (!user && (currentPage === 'auth' || currentPage === 'dashboard')) {
     return <AuthPage onSuccess={handleAuthSuccess} />;
   }
-
   // Render page content
   const renderPageContent = () => {
     switch (currentPage) {
@@ -146,10 +135,8 @@ function App() {
         );
     }
   };
-
   // For non-authenticated pages, show full-width layout
   const isPublicPage = ['landing', 'how-it-works', 'reviews'].includes(currentPage);
-
   return (
     <div className={`min-h-screen transition-colors duration-300 ${
       theme === 'dark' 
@@ -195,7 +182,6 @@ function App() {
       <div className={isPublicPage ? 'pt-16' : ''}>
         {renderPageContent()}
       </div>
-
       <Toaster
         position="top-right"
         toastOptions={{
@@ -212,5 +198,5 @@ function App() {
     </div>
   );
 }
-
 export default App;
+

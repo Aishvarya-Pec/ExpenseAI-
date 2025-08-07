@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useUser, useAuth as useClerkAuth, SignIn, SignUp } from '@clerk/clerk-react'
+import { useUser, useAuth as useClerkAuth } from '@clerk/clerk-react'
 import toast from 'react-hot-toast'
 
 // Check if Clerk is properly configured
@@ -7,12 +7,10 @@ const isClerkConfigured = () => {
   const key = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
   return key && key !== 'pk_test_your-clerk-key'
 }
-
 export const useAuth = () => {
   const { user, isLoaded: userLoaded } = useUser()
   const { signOut: clerkSignOut } = useClerkAuth()
   const [loading, setLoading] = useState(true)
-
   useEffect(() => {
     if (isClerkConfigured()) {
       // Use real Clerk authentication
@@ -24,7 +22,8 @@ export const useAuth = () => {
     }
   }, [userLoaded])
 
-  const signUp = async (email: string, password: string, fullName: string) => {
+  
+  const signUp = async (email: string, _password: string, fullName: string) => {
     try {
       setLoading(true)
       console.log('📝 Signing up with:', email, fullName)
@@ -50,7 +49,9 @@ export const useAuth = () => {
     }
   }
 
-  const signIn = async (email: string, password: string) => {
+  
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const signIn = async (email: string, _password: string) => {
     try {
       setLoading(true)
       console.log('🔐 Signing in with:', email)
@@ -75,7 +76,6 @@ export const useAuth = () => {
       setLoading(false)
     }
   }
-
   const signOut = async () => {
     try {
       setLoading(true)
@@ -96,7 +96,9 @@ export const useAuth = () => {
     }
   }
 
-  const resetPassword = async (email: string) => {
+  
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const resetPassword = async (_email: string) => {
     try {
       if (isClerkConfigured()) {
         // Clerk handles password reset through their UI components
@@ -114,7 +116,6 @@ export const useAuth = () => {
       return { error }
     }
   }
-
   return {
     user,
     session: user ? { user } : null,
