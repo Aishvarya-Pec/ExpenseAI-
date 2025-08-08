@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { PlusCircle, TrendingUp, DollarSign, Target } from 'lucide-react';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
-import { ExpenseForm } from '../expense/ExpenseForm';
+import ExpenseForm from '../expense/ExpenseForm';
 import { ExpenseList } from '../expense/ExpenseList';
 import { Analytics } from './Analytics';
 import { BudgetTracker } from './BudgetTracker';

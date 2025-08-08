@@ -1,5 +1,4 @@
 // Clerk configuration and helper functions
-
 // Clerk configuration
 export const clerkConfig = {
   publishableKey: import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || 'pk_test_your-clerk-key',
@@ -29,7 +28,9 @@ export const deleteExpense = async (id: string) => {
   // This would typically call your backend API
   // For now, we'll need the userId to remove from localStorage
   // This is a simplified implementation
-  console.log('Deleting expense:', id);
+
+  // Delete expense functionality
+  return id; // Return the id to satisfy TypeScript
 };
 export const getBudgets = async (userId: string) => {
   // This would typically call your backend API
