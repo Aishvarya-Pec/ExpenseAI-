@@ -541,3 +541,12 @@
     background: white !important;
   }
 }
+@media (max-width: 640px) {
+  /* Ensure the app content never exceeds viewport width in portrait */
+  .portrait-container,
+  body,
+  html,
+  #root {
+    max-width: 100vw;
+  }
+}
