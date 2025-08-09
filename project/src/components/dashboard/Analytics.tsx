@@ -52,6 +52,15 @@ export const Analytics: React.FC<AnalyticsProps> = ({ expenses }) => {
     return null;
   };
 
+  // Detect small screens to adjust pie chart labels and radius
+  const [isSmallScreen, setIsSmallScreen] = React.useState(true);
+  React.useEffect(() => {
+    const update = () => setIsSmallScreen(typeof window !== 'undefined' && window.innerWidth < 640);
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+
   if (expenses.length === 0) {
     return (
       <Card className="text-center py-12">
@@ -85,10 +94,11 @@ export const Analytics: React.FC<AnalyticsProps> = ({ expenses }) => {
                   data={pieData}
                   cx="50%"
                   cy="50%"
-                  outerRadius={100}
+                  outerRadius={isSmallScreen ? 80 : 100}
                   fill="#8884d8"
                   dataKey="value"
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  label={isSmallScreen ? false : ({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  labelLine={isSmallScreen ? false : true}
                 >
                   {pieData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
