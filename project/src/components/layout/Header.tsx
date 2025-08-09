@@ -103,7 +103,7 @@ export const Header: React.FC<HeaderProps> = ({ user, onProfileClick, onSignOut 
       
       className="sticky top-0 z-50 bg-black/90 backdrop-blur-lg border-b border-yellow-500/20"
     >
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-x-clip">
+             <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Logo size="md" animated={true} />

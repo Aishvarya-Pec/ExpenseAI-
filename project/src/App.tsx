@@ -121,7 +121,7 @@ function App() {
         if (!user) return <AuthPage onSuccess={handleAuthSuccess} mode="login" />;
 
         return (
-          <div className="flex min-h-screen bg-black w-full max-w-[100vw] overflow-x-clip">
+          <div className="flex min-h-screen bg-black w-full">
             <Sidebar currentPage={currentPage} onPageChange={handlePageChange} />
             <div className="flex-1">
               <Header user={user} onProfileClick={handleProfileClick} onSignOut={signOut} />
