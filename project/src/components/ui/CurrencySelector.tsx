@@ -61,9 +61,7 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
         </div>
         <ChevronDown 
           size={16} 
-          className={`text-gray-400 transition-transform duration-200 ${
-            isOpen ? 'rotate-180' : ''
-          }`}
+          className={`text-gray-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
         />
       </Button>
 
@@ -102,10 +100,7 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
                     disabled={isRefreshing}
                     className="text-yellow-600 hover:text-yellow-700 dark:text-yellow-400 dark:hover:text-yellow-300"
                   >
-                    <RefreshCw 
-                      size={14} 
-                      className={isRefreshing ? 'animate-spin' : ''} 
-                    />
+                    <RefreshCw size={14} className={isRefreshing ? 'animate-spin' : ''} />
                   </Button>
                 </div>
               </div>
@@ -121,19 +116,13 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
                     setIsOpen(false);
                   }}
                   className={`w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-150 flex items-center justify-between ${
-                    value === currency.code 
-                      ? 'bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500' 
-                      : ''
+                    value === currency.code ? 'bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500' : ''
                   }`}
                 >
                   <div className="flex items-center space-x-3">
                     <span className="text-xl">{currency.symbol}</span>
                     <div>
-                      <div className={`font-medium ${
-                        value === currency.code 
-                          ? 'text-yellow-700 dark:text-yellow-300' 
-                          : 'text-gray-900 dark:text-white'
-                      }`}>
+                      <div className={`font-medium ${value === currency.code ? 'text-yellow-700 dark:text-yellow-300' : 'text-gray-900 dark:text-white'}`}>
                         {currency.code}
                       </div>
                       <div className="text-sm text-gray-500 dark:text-gray-400">
@@ -161,12 +150,7 @@ export const CurrencySelector: React.FC<CurrencySelectorProps> = ({
       </AnimatePresence>
 
       {/* Backdrop */}
-      {isOpen && (
-        <div 
-          className="fixed inset-0 z-40" 
-          onClick={() => setIsOpen(false)}
-        />
-      )}
+      {isOpen && <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />}
     </div>
   );
 };
@@ -206,11 +190,7 @@ export const CurrencyConverter: React.FC = () => {
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             From
           </label>
-          <CurrencySelector 
-            value={fromCurrency}
-            onChange={setFromCurrency}
-            showRefresh={true}
-          />
+          <CurrencySelector value={fromCurrency} onChange={setFromCurrency} showRefresh={true} />
         </div>
 
         {/* To Currency */}
@@ -218,10 +198,7 @@ export const CurrencyConverter: React.FC = () => {
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             To
           </label>
-          <CurrencySelector 
-            value={toCurrency}
-            onChange={setToCurrency}
-          />
+          <CurrencySelector value={toCurrency} onChange={setToCurrency} />
         </div>
 
         {/* Result */}
