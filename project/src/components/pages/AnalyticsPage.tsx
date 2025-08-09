@@ -40,6 +40,15 @@ export const AnalyticsPage: React.FC = () => {
   const avgDaily = totalExpenses / 30;
   const monthlyChange = 12.5; // Percentage change from last month
 
+  // Determine if viewport is small to adjust chart
+  const [isSmallScreen, setIsSmallScreen] = useState(true);
+  React.useEffect(() => {
+    const update = () => setIsSmallScreen(typeof window !== 'undefined' && window.innerWidth < 768);
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -183,33 +192,37 @@ export const AnalyticsPage: React.FC = () => {
           className="bg-gray-900/50 border border-yellow-500/20 rounded-xl p-6"
         >
           <h3 className="text-white font-semibold mb-4">Spending by Category</h3>
-          <div className="flex items-center">
-            <ResponsiveContainer width="60%" height={300}>
-              <PieChart>
-                <Pie
-                  data={categoryData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={100}
-                  paddingAngle={2}
-                  dataKey="value"
-                >
-                  {categoryData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip 
-                  contentStyle={{ 
-                    backgroundColor: '#1f2937', 
-                    border: '1px solid #374151',
-                    borderRadius: '8px',
-                    color: '#fff'
-                  }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
-            <div className="flex-1 space-y-2">
+          <div className="flex flex-col md:flex-row items-center gap-6">
+            <div className="w-full md:w-1/2">
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie
+                    data={categoryData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={isSmallScreen ? 80 : 100}
+                    paddingAngle={2}
+                    dataKey="value"
+                    label={false}
+                    labelLine={false}
+                  >
+                    {categoryData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: '#1f2937', 
+                      border: '1px solid #374151',
+                      borderRadius: '8px',
+                      color: '#fff'
+                    }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="w-full md:flex-1 space-y-2">
               {categoryData.slice(0, 5).map((category, index) => (
                 <div key={index} className="flex items-center gap-2">
                   <div 
