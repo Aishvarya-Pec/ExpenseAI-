@@ -1,4 +1,3 @@
-
 import React from 'react'
 import { motion } from 'framer-motion'
 import { 
@@ -36,10 +35,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPage, onPageChange, isC
     <motion.aside
       initial={{ x: -20, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
-     className={`hidden md:block ${
+      
+className={`hidden md:block ${
         isCollapsed ? 'md:w-16' : 'md:w-64'
-      } bg-black border-r border-yellow-500/20 md:h-screen md:sticky md:top-0 transition-all duration-300 overflow-hidden`}
+      }} bg-black border-r border-yellow-500/20 md:h-screen md:sticky md:top-0 transition-all duration-300 overflow-x-clip overflow-y-auto`}
     >
+
       <div className="p-6">
         <motion.div
           initial={{ opacity: 0 }}
